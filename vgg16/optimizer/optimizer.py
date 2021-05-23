@@ -1,13 +1,10 @@
 import torch.optim as optim
-import torch.nn as nn
 
-class optimizer():
-    def optimizer(self, model):
-        optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
-        # 아래 내용 해결해야함
-        # then decreased by a factor of 10 when the validation set accuracy stopped improving
-        # In total, the learning rate was decreased 3 times, and the learning was stopped after 370K iterations (74 epochs)
+class Optimizer():
+    def __init__(self, model):
+        self.model = model
 
-    def criterion():
-        criterion = nn.CrossEntropyLoss().cuda()
-        return criterion
+    def optimizer(self):
+        return optim.Adam(self.model.parameters(), lr=0.00001)
+        # ImageNet 데이터가 아닌 STL-10데이터를 사용함에 따른 optimizer 변경(성능이 안나옴)
+        #return optim.SGD(self.model.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
