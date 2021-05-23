@@ -1,0 +1,51 @@
+import torch
+import torch.nn as nn
+
+class vgg16(nn.Module):
+    def __init__(self):
+        super(vgg16, self).__init__()
+        self.conv1 = nn.Conv2d(3, 64, 3, 1)
+        self.conv2 = nn.Conv2d(64, 64, 3, 1)
+        self.conv3 = nn.Conv2d(64, 128, 3, 1)
+        self.conv4 = nn.Conv2d(128, 128, 3, 1)
+        self.conv5 = nn.Conv2d(128, 256, 3, 1)
+        self.conv6 = nn.Conv2d(256, 256, 3, 1)
+        self.conv7 = nn.Conv2d(256, 256, 3, 1)
+        self.conv8 = nn.Conv2d(256, 512, 3, 1)
+        self.conv9 = nn.Conv2d(512, 512, 3, 1)
+        self.conv10 = nn.Conv2d(512, 512, 3, 1)
+        self.conv11 = nn.Conv2d(512, 512, 3, 1)
+        self.conv12 = nn.Conv2d(512, 512, 3, 1)
+        self.conv13 = nn.Conv2d(512, 512, 3, 1)
+
+        self.fc1 = nn.Linear(512*7*7, 4096)
+        self.fc2 = nn.Linear(4096, 4096)
+        self.fc3 = nn.Linear(4096, 10)
+
+    def forward(self, x):
+        x = nn.ReLU(self.conv1(x))
+        x = nn.ReLU(self.conv2(x))
+        x = nn.MaxPool2d(2,2)
+        x = nn.ReLU(self.conv3(x))
+        x = nn.ReLU(self.conv4(x))
+        x = nn.MaxPool2d(2,2)
+        x = nn.ReLU(self.conv5(x))
+        x = nn.ReLU(self.conv6(x))
+        x = nn.ReLU(self.conv7(x))
+        x = nn.MaxPool2d(2,2)
+        x = nn.ReLU(self.conv8(x))
+        x = nn.ReLU(self.conv9(x))
+        x = nn.ReLU(self.conv10(x))
+        x = nn.MaxPool2d(2,2)
+        x = nn.ReLU(self.conv10(x))
+        x = nn.ReLU(self.conv11(x))
+        x = nn.ReLU(self.conv12(x))
+        x = nn.MaxPool2d(2,2)
+        x = torch.flatten(x)
+        x = nn.ReLU(self.fc1(x))
+        x = torch.dropout(0.5)
+        x = nn.ReLU(self.fc2(x))
+        x = torch.dropout(0.5)
+        x = self.fc3(x)
+        x = torch.softmax(x)
+
